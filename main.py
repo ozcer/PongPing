@@ -5,6 +5,7 @@ import itertools
 
 from pygame.locals import *
 
+from src.ball import Ball
 from src.const import *
 from src.paddle import Paddle
 
@@ -29,8 +30,10 @@ class Game:
 
         p1 = Paddle(self, (50, DISPLAY_HEIGHT/2))
         p2 = Paddle(self, (DISPLAY_WIDTH-50, DISPLAY_HEIGHT/2), control=1)
+        b = Ball(self, (DISPLAY_WIDTH/2, DISPLAY_HEIGHT/2))
         self.add_entity(p1)
         self.add_entity(p2)
+        self.add_entity(b)
         self.run()
 
     def run(self):
@@ -43,10 +46,13 @@ class Game:
             self.draw_all_sprites()
 
             for event in self.events:
+                if event.type == pygame.locals.QUIT:
+                    self.quit()
+
                 if event.type == KEYDOWN:
                     key = event.key
                     if key == pygame.K_ESCAPE:
-                        exit(1)
+                        self.quit()
 
             pygame.display.update()
             self.fps_clock.tick(FPS)
@@ -63,6 +69,9 @@ class Game:
         logging.info(f"{entity} created")
         self.entities.add(entity)
 
+    def quit(self):
+        pygame.quit()
+        sys.exit()
 
 if __name__ == "__main__":
     Game()

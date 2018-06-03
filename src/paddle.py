@@ -13,13 +13,18 @@ class Paddle(pygame.sprite.Sprite):
         super().__init__()
         self.game = game
         self.x, self.y = pos
+        self.dx, self.dy = 0, 0
         self.control_type = control
 
         self.image = pygame.Surface((Paddle.width, Paddle.height))
         self.rect = self.image.get_rect()
         self.rect.center = self.x, self.y
 
+        self.speed = 5
+
     def update(self):
+        self.x += self.dx
+        self.y += self.dy
         self.rect.center = self.x, self.y
         self._handle_input()
 
@@ -30,7 +35,6 @@ class Paddle(pygame.sprite.Sprite):
         if self.rect.bottom > DISPLAY_HEIGHT:
             self.rect.bottom = DISPLAY_HEIGHT
             self.y = self.rect.centery
-
 
     def draw(self):
         self.game.surface.blit(self.image, self.rect)
@@ -48,14 +52,18 @@ class Paddle(pygame.sprite.Sprite):
                 self.move("up")
             elif keys[K_s]:
                 self.move("down")
+            else:
+                self.dy = 0
         elif self.control_type == 1:
             if keys[K_UP]:
                 self.move("up")
             elif keys[K_DOWN]:
                 self.move("down")
+            else:
+                self.dy = 0
 
     def move(self, direction):
         if direction == "up":
-            self.y -= 5
+            self.dy = -self.speed
         elif direction == "down":
-            self.y += 5
+            self.dy = self.speed

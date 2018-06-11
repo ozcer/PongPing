@@ -31,7 +31,7 @@ class Ball(pygame.sprite.Sprite):
         # rebound horizontally hitting paddle
         collidee = self.collide_with_paddle()
         if collidee:
-            self.dx *= -1.1
+            self.dx *= -1.5
             self.dy += collidee.dy * 0.5
 
         # rebound vertically hitting floor or ceiling
@@ -53,8 +53,12 @@ class Ball(pygame.sprite.Sprite):
                     self.kick()
 
     def kick(self):
-        self.dx = random.choice([-1, 1]) * random.randint(2, 4)
-        self.dy = random.choice([-1, 1]) * random.randint(2, 4)
+        rand_vel = (random.choice([-1, 1]) * random.randint(2, 4),
+                    random.choice([-1, 1]) * random.randint(2, 4))
+        print(rand_vel)
+        self.game.client.send_msg(f'k {rand_vel[0]} {rand_vel[1]}')
+        self.dx = rand_vel[0]
+        self.dy = rand_vel[1]
 
     def reset(self):
         self.x = DISPLAY_WIDTH / 2
@@ -63,6 +67,6 @@ class Ball(pygame.sprite.Sprite):
         self.dy = 0
 
     def collide_with_paddle(self):
-        for sprite in  self.game.entities:
+        for sprite in self.game.entities:
             if self.rect.colliderect(sprite.rect) and isinstance(sprite, Paddle):
                 return sprite

@@ -3,11 +3,13 @@ import sys
 import time
 import itertools
 
+
 from pygame.locals import *
 
 from src.ball import Ball
 from src.const import *
 from src.paddle import Paddle
+from client import Client
 
 
 class Game:
@@ -15,7 +17,7 @@ class Game:
                         datefmt='%m/%d/%Y %I:%M:%S%p',
                         format='%(asctime)s %(message)s')
 
-    def __init__(self):
+    def __init__(self, id):
         # Initializing Pygame window
         os.environ['SDL_VIDEO_CENTERED'] = '1'
         pygame.init()
@@ -26,7 +28,7 @@ class Game:
         self.entities = pygame.sprite.Group()
         self.fps_clock = pygame.time.Clock()
         self.events = pygame.event.get()
-        self.background_color = MAROON
+        self.background_color = D_GREY
 
         p1 = Paddle(self, (50, DISPLAY_HEIGHT/2))
         p2 = Paddle(self, (DISPLAY_WIDTH-50, DISPLAY_HEIGHT/2), control=1)
@@ -34,6 +36,14 @@ class Game:
         self.add_entity(p1)
         self.add_entity(p2)
         self.add_entity(b)
+
+        self.p1 = p1
+        self.p2 = p2
+        self.ball = b
+        self.id = id
+
+        self.client = Client(self, "localhost", 8008)
+
         self.run()
 
     def run(self):
@@ -73,5 +83,6 @@ class Game:
         pygame.quit()
         sys.exit()
 
+
 if __name__ == "__main__":
-    Game()
+    Game(0)

@@ -42,7 +42,7 @@ class Game:
         self.ball = b
         self.id = id
 
-        self.client = Client(self, "127.0.0.1", 5000)
+        self.client = Client(self, "127.0.0.33", 5000)
 
         self.run()
 

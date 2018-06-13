@@ -56,7 +56,7 @@ class Ball(pygame.sprite.Sprite):
         rand_vel = (random.choice([-1, 1]) * random.randint(2, 4),
                     random.choice([-1, 1]) * random.randint(2, 4))
         print(rand_vel)
-        self.game.client.send_msg(f'k {rand_vel[0]} {rand_vel[1]}')
+        self.game.client.send_msg(f'b {rand_vel[0]} {rand_vel[1]}')
         self.dx = rand_vel[0]
         self.dy = rand_vel[1]
 

@@ -23,18 +23,19 @@ class Client:
         while True:
             data = self.sock.recv(1024).decode("utf-8")
             print(f"received: {data}")
-            for msg in data.split('|'):
-                print(f"parsing {msg}")
-                parts = msg.split()
-                if parts[0] == 'p0':
-                    self.game.p1.x = float(parts[1])
-                    self.game.p1.y = float(parts[2])
-                elif parts[0] == 'p1':
-                    self.game.p2.x = float(parts[1])
-                    self.game.p2.y = float(parts[2])
-                elif parts[1] == 'b':
-                    self.game.ball.dx = int(parts[1])
-                    self.game.ball.dy = int(parts[2])
-
-            if not data:
+            if data:
+                for msg in data.split('|')[:-1]:
+                    print(f"parsing {msg}")
+                    parts = msg.split()
+                    print(f"parts: {parts}")
+                    if parts[0] == 'p0':
+                        self.game.p1.x = float(parts[1])
+                        self.game.p1.y = float(parts[2])
+                    elif parts[0] == 'p1':
+                        self.game.p2.x = float(parts[1])
+                        self.game.p2.y = float(parts[2])
+                    elif parts[0] == 'b':
+                        self.game.ball.dx = int(parts[1])
+                        self.game.ball.dy = int(parts[2])
+            else:
                 break

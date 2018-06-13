@@ -26,6 +26,9 @@ class Paddle(pygame.sprite.Sprite):
         self._handle_input()
         self.x += self.dx
         self.y += self.dy
+        if self.rect.center != (self.x, self.y):
+            self.game.client.send_msg(f'p{self.control_type} {self.x} {self.y}')
+
         self.rect.center = self.x, self.y
         self.dy = 0
 
@@ -51,17 +54,13 @@ class Paddle(pygame.sprite.Sprite):
         if self.control_type == 0:
             if keys[K_w]:
                 self.move("up")
-                self.game.client.send_msg("1u")
             elif keys[K_s]:
                 self.move("down")
-                self.game.client.send_msg("1d")
         elif self.control_type == 1:
             if keys[K_UP]:
                 self.move("up")
-                self.game.client.send_msg("2u")
             elif keys[K_DOWN]:
                 self.move("down")
-                self.game.client.send_msg("2d")
 
     def move(self, direction):
         if direction == "up":

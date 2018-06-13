@@ -15,25 +15,26 @@ class Client:
         self.game = game
 
     def send_msg(self, msg):
-        print(f"sending: {msg}")
-        self.sock.send(msg.encode("utf-8"))
+        _msg = msg + '|'
+        print(f"sending: {_msg}")
+        self.sock.send(_msg.encode("utf-8"))
 
     def receive_msg(self):
         while True:
             data = self.sock.recv(1024).decode("utf-8")
             print(f"received: {data}")
-            if data == "1u":
-                self.game.p1.move("up")
-            elif data == "1d":
-                self.game.p1.move("down")
-            elif data == "2u":
-                self.game.p2.move("up")
-            elif data == "2d":
-                self.game.p2.move("down")
-            elif data[0] == "k":
-                _, x, y = data.split()
-                self.game.ball.dx = int(x)
-                self.game.ball.dy = int(y)
+            for msg in data.split('|'):
+                print(f"parsing {msg}")
+                parts = msg.split()
+                if parts[0] == 'p0':
+                    self.game.p1.x = float(parts[1])
+                    self.game.p1.y = float(parts[2])
+                elif parts[0] == 'p1':
+                    self.game.p2.x = float(parts[1])
+                    self.game.p2.y = float(parts[2])
+                elif parts[1] == 'b':
+                    self.game.ball.dx = int(parts[1])
+                    self.game.ball.dy = int(parts[2])
 
             if not data:
                 break

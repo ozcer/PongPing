@@ -8,7 +8,9 @@ class Server:
 
     def __init__(self):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.sock.bind(('', 8008))
+        host = '0.0.0.0'
+        port = 5000
+        self.sock.bind((host, 5000))
         self.sock.listen(1)
 
         self.con1 = None

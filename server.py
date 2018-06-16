@@ -55,9 +55,9 @@ class Server:
 
     def send_other(self, connection, data):
         logging.warning(f"sending {data}")
-        if connection == self.con1:
+        if connection == self.con1 and self.con2:
             self.con2.send(bytes(data))
-        else:
+        elif self.con1:
             self.con1.send(bytes(data))
 
 

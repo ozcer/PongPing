@@ -38,8 +38,6 @@ class Paddle(pygame.sprite.Sprite):
             self.rect.bottom = DISPLAY_HEIGHT
             self.y = self.rect.centery
 
-        self.game.client.send_msg(f'p{self.control_type} {self.x} {self.y}')
-
     def draw(self):
         self.game.surface.blit(self.image, self.rect)
 
@@ -54,13 +52,17 @@ class Paddle(pygame.sprite.Sprite):
         if self.control_type == 0:
             if keys[K_w]:
                 self.move("up")
+                self.game.client.send_msg(f'p0 {self.x} {self.y}')
             elif keys[K_s]:
                 self.move("down")
+                self.game.client.send_msg(f'p0 {self.x} {self.y}')
         elif self.control_type == 1:
             if keys[K_UP]:
                 self.move("up")
+                self.game.client.send_msg(f'p1 {self.x} {self.y}')
             elif keys[K_DOWN]:
                 self.move("down")
+                self.game.client.send_msg(f'p1 {self.x} {self.y}')
 
     def move(self, direction):
         if direction == "up":

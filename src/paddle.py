@@ -26,8 +26,6 @@ class Paddle(pygame.sprite.Sprite):
         self._handle_input()
         self.x += self.dx
         self.y += self.dy
-        if self.rect.center != (self.x, self.y):
-            self.game.client.send_msg(f'p{self.control_type} {self.x} {self.y}')
 
         self.rect.center = self.x, self.y
         self.dy = 0
@@ -39,6 +37,8 @@ class Paddle(pygame.sprite.Sprite):
         if self.rect.bottom > DISPLAY_HEIGHT:
             self.rect.bottom = DISPLAY_HEIGHT
             self.y = self.rect.centery
+
+        self.game.client.send_msg(f'p{self.control_type} {self.x} {self.y}')
 
     def draw(self):
         self.game.surface.blit(self.image, self.rect)

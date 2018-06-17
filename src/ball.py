@@ -18,7 +18,7 @@ class Ball(pygame.sprite.Sprite):
         self.x, self.y = pos
         self.dx, self.dy = 0, 0
         self.image = pygame.Surface((Ball.width, Ball.height))
-        self.image.fill(L_GREY)
+        self.image.fill(D_GREY)
         self.rect = self.image.get_rect()
         self.rect.center = self.x, self.y
 

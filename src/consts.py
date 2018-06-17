@@ -1,2 +1,0 @@
-IGN = "player"
-

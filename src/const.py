@@ -14,6 +14,13 @@ START_WINDOW_POS = (100, 100)
 LOG_LEVEL = 0
 EXIT_MESSAGE = "EXIT_MESSAGE"
 
+# network
+USERNAME = "tony2"
+
+# string
+HELP1 = 'W + S to move'
+HELP2 = 'UP + DOWN to move'
+
 # colors
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)

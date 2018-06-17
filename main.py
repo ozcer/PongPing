@@ -1,7 +1,5 @@
 import logging
 import sys
-import time
-import itertools
 
 
 from pygame.locals import *
@@ -13,25 +11,27 @@ from client import Client
 
 
 class Game:
-    logging.basicConfig(level=LOG_LEVEL,
-                        datefmt='%m/%d/%Y %I:%M:%S%p',
-                        format='%(asctime)s %(message)s')
-
     def __init__(self, id):
         # Initializing Pygame window
         os.environ['SDL_VIDEO_CENTERED'] = '1'
         pygame.init()
+        pygame.font.init()
 
         pygame.display.set_caption(CAPTION)
         self.surface = pygame.display.set_mode((DISPLAY_WIDTH, DISPLAY_HEIGHT), 0, 32)
 
+        self.username1 = ''
+        self.username2 = ''
+
         self.entities = pygame.sprite.Group()
         self.fps_clock = pygame.time.Clock()
         self.events = pygame.event.get()
-        self.background_color = D_GREY
+        self.background_color = L_GREY
+        self.font = pygame.font.SysFont('Comic Sans MS', 20)
 
+        self.control_type = -1
         p1 = Paddle(self, (50, DISPLAY_HEIGHT/2))
-        p2 = Paddle(self, (DISPLAY_WIDTH-50, DISPLAY_HEIGHT/2), control=1)
+        p2 = Paddle(self, (DISPLAY_WIDTH-50, DISPLAY_HEIGHT/2), control=2)
         b = Ball(self, (DISPLAY_WIDTH/2, DISPLAY_HEIGHT/2))
         self.add_entity(p1)
         self.add_entity(p2)
@@ -43,7 +43,6 @@ class Game:
         self.id = id
 
         self.client = Client(self, "25.8.62.7", 5000)
-
         self.run()
 
     def run(self):
@@ -74,6 +73,23 @@ class Game:
     def draw_all_sprites(self):
         for sprite in self.entities:
             sprite.draw()
+
+        if self.control_type == 1:
+            self._draw_instruction('left')
+        elif self.control_type == 2:
+            self._draw_instruction('right')
+
+    def _draw_instruction(self, side):
+        help_text = HELP1 if side == 'left' else HELP2
+        _surface = self.font.render(help_text, True, L_BLUE)
+        _rect = _surface.get_rect()
+        _rect.centery = DISPLAY_HEIGHT / 2
+        if side == 'left':
+            _rect.centerx = DISPLAY_WIDTH * (1 / 4)
+        elif side == 'right':
+            _rect.centerx = DISPLAY_WIDTH * (3 / 4)
+
+        self.surface.blit(_surface, _rect)
 
     def add_entity(self, entity):
         logging.info(f"{entity} created")

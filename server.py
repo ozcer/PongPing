@@ -18,16 +18,18 @@ class Server:
 
     def handler(self, connection, address):
         while True:
-            data = connection.recv(1024)
-            print(f'received: {data.decode("utf-8")}')
-            self.send_other(connection, data)
-            if not data:
+            try:
+                data = connection.recv(1024)
+            except ConnectionResetError:
                 self.remove_connection(connection)
                 connection.close()
                 break
+            print(f'received: {data.decode("utf-8")}')
+            self.send_other(connection, data)
+            #if not data:
 
     def run(self):
-        print("running server...")
+        print("Server running")
         while True:
             con, adr = self.sock.accept()
             con_thread = threading.Thread(target=self.handler, args=(con, adr))
@@ -36,7 +38,7 @@ class Server:
             self.add_connection(con)
 
     def add_connection(self, connection):
-        print(f"{connection} connected")
+        print(f"{connection.getpeername()} connected")
         if self.con1 is None:
             self.con1 = connection
         elif self.con2 is None:
@@ -45,13 +47,16 @@ class Server:
             raise Exception("LOBBY FULL")
 
     def remove_connection(self, connection):
-        print(f"{connection} disconnected")
         if self.con1 == connection:
+            n = 1
             self.con1 = None
-            if self.con2 == connection:
-                self.con2 = None
+        elif self.con2 == connection:
+            n = 2
+            self.con2 = None
         else:
             raise Exception("NO SUCH CONNECTION CONNECTED")
+
+        print(f"{connection.getpeername()} disconnected as player{n}")
 
     def send_other(self, connection, data):
         logging.warning(f"sending {data}")

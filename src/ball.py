@@ -32,6 +32,8 @@ class Ball(pygame.sprite.Sprite):
         collidee = self.collide_with_paddle()
         if collidee:
             self.dx *= -1.5
+            if abs(self.dx) > MAX_BALL_SPEED:
+                self.dx = sign(self.dx) * MAX_BALL_SPEED
             self.dy += collidee.dy * 0.5
 
         # rebound vertically hitting floor or ceiling

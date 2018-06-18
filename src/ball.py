@@ -21,6 +21,7 @@ class Ball(pygame.sprite.Sprite):
         self.image.fill(D_GREY)
         self.rect = self.image.get_rect()
         self.rect.center = self.x, self.y
+        self.send_delay = 3
 
     def update(self):
         self._handle_input()
@@ -47,9 +48,12 @@ class Ball(pygame.sprite.Sprite):
             else:
                 self.game.client.send_msg('win player1')
 
-
         if self.game.control_type == 1:
-            self.game.client.send_msg(f'ball {self.x} {self.y}')
+            if self.send_delay == 0:
+                self.game.client.send_msg(f'ball {self.x} {self.y}')
+                self.send_delay = 3
+            else:
+                self.send_delay -= 1
 
     def draw(self):
         self.game.surface.blit(self.image, self.rect)

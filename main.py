@@ -23,6 +23,9 @@ class Game:
         self.username1 = ''
         self.username2 = ''
 
+        self.point1 = 0
+        self.point2 = 0
+
         self.entities = pygame.sprite.Group()
         self.fps_clock = pygame.time.Clock()
         self.events = pygame.event.get()
@@ -74,6 +77,8 @@ class Game:
         for sprite in self.entities:
             sprite.draw()
 
+        self._draw_points()
+
         if self.control_type == 1:
             self._draw_instruction('left')
         elif self.control_type == 2:
@@ -90,6 +95,17 @@ class Game:
             _rect.centerx = DISPLAY_WIDTH * (3 / 4)
 
         self.surface.blit(_surface, _rect)
+
+    def _draw_points(self):
+        _surface = self.font.render(str(self.point1), True, BLACK)
+        _rect = _surface.get_rect()
+        _rect.topleft = 10, 10
+        self.surface.blit(_surface, _rect)
+
+        _surface2 = self.font.render(str(self.point2), True, BLACK)
+        _rect2 = _surface2.get_rect()
+        _rect2.topright = DISPLAY_WIDTH - 10, 10
+        self.surface.blit(_surface2, _rect2)
 
     def add_entity(self, entity):
         logging.info(f"{entity} created")

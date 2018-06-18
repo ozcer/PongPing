@@ -41,7 +41,8 @@ class Server:
 
                     self.send_all(f'id player1 {self.username1}')
                     self.send_all(f'id player2 {self.username2}')
-
+                elif parts[1] == 'win':
+                    self.send_all(data, encoded=True)
                 else:
                     self.send_other(data, connection, encoded=True)
 

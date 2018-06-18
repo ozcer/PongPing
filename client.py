@@ -70,3 +70,9 @@ class Client:
                         self.game.username1 = username
                     elif parts[1] == 'player2':
                         self.game.username2 = username
+
+                elif parts[0] == 'win':
+                    if parts[1] == 'player1':
+                        self.game.point1 += 1
+                    elif parts[1] == 'player2':
+                        self.game.point2 += 1

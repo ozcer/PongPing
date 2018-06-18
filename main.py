@@ -45,7 +45,7 @@ class Game:
         self.ball = b
         self.id = id
 
-        self.client = Client(self, "25.8.62.7", 5000)
+        self.client = Client(self, "25.8.57.174", 5000)
         self.run()
 
     def run(self):

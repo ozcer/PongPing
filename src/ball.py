@@ -40,10 +40,13 @@ class Ball(pygame.sprite.Sprite):
         if self.rect.top < 0 or self.rect.bottom > DISPLAY_HEIGHT:
             self.dy *= -1
         # reset upon leaving horizontally
-        if self.rect.right < 0:
-            self.game.client.send_msg('win player2')
-        if self.rect.left > DISPLAY_WIDTH:
-            self.game.client.send_msg('win player1')
+        if self.rect.right < 0 or self.rect.left > DISPLAY_WIDTH:
+            self.game.ball.reset()
+            if self.rect.right < 0:
+                self.game.client.send_msg('win player2')
+            else:
+                self.game.client.send_msg('win player1')
+
 
         if self.game.control_type == 1:
             self.game.client.send_msg(f'ball {self.x} {self.y}')

@@ -76,3 +76,9 @@ class Client:
                         self.game.point1 += 1
                     elif parts[1] == 'player2':
                         self.game.point2 += 1
+
+                    self.game.ball.reset()
+
+                elif parts[0] == 'ball':
+                    self.game.ball.x = float(parts[1])
+                    self.game.ball.y = float(parts[2])
